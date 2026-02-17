@@ -1,0 +1,28 @@
+main: io.github.darjeelingt.spigot.git4dp.Main
+name: Git-for-Datapack
+version: "${version}"
+description: GitHubのリポジトリからデータパックを更新するプラグイン
+api-version: '1.21.11'
+load: POSTWORLD
+author: 'darjeeling<T>'
+prefix: G4D
+
+commands:
+  g4d-connect:
+    description: データパック名とリモートリポジトリを登録
+    usage: 'Usage: /<command> <datapack_name> <URL> [<branch> <directory>]'
+  g4d-edit:
+    description: リポジトリの登録情報を編集
+    usage: 'Usage: /<command> <datapack_name> <attribute> <value>'
+  g4d-disconnect:
+    description: リポジトリの登録情報を削除(データパック自体は削除されない)
+    usage: 'Usage: /<command> <datapack_name>'
+  g4d-info:
+    description: リポジトリの登録情報を出力
+    usage: 'Usage: /<command> <datapack_name>'
+  g4d-list:
+    description: 登録されたデータパック名の一覧を表示
+    usage: 'Usage: /<command>'
+  g4d-reload:
+    description: リポジトリからデータパックを再読み込み
+    usage: 'Usage: /<command> [datapack_name]'

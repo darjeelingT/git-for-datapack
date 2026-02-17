@@ -1,0 +1,10 @@
+datapacks-path: './world/datapacks/'
+workspace-path: './G4D_workspace/'
+token-env: 'G4D_GITHUBTOKEN'
+mc-reloadcommand: 'minecraft:reload'
+
+default:
+  branch: 'main'
+  directory: './'
+
+datapacks:
