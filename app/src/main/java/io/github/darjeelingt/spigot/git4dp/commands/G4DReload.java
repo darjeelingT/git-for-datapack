@@ -24,9 +24,10 @@ import io.github.darjeelingt.spigot.git4dp.util.RemoveDirectoryFileVisitor;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 
-final public class G4DReload extends BaseCommand {
+final public class G4DReload extends BaseCommand implements TabCompleter {
 
     public G4DReload(Main plugin) {
         super(plugin);
@@ -71,39 +72,39 @@ final public class G4DReload extends BaseCommand {
         } else if (args[0] == null || args[0].isEmpty()) {
             sender.sendMessage("Error: Usage: /dpl-reload [datapack_name]");
         } else {
-            int packid = -1;
+            String token = System.getenv(
+                    config.getString("token-env")
+                );
 
-            for (int i = 0; i < repositories.size(); i++) {
-                if (repositories.get(i).datapackname().equals(args[0])) {
-                    packid = i;
-                    break;
+            for (String packName : args) {
+                int packid = this.getPlugin().getDatapackNames().indexOf(packName);
+
+                if (packid == -1) {
+                    sender.sendMessage(String.format("Error: Datapack \"%s\" Not Found", packName));
+                } else {
+                    DatapackRepository repository = repositories.get(packid);
+                    try {
+                        reloadDatapack(repository, workspacepath, datapackspath, token);
+                        
+                        sender.sendMessage(String.format("Reloaded \"%s\"!", repository.datapackname()));
+
+                    } catch (RuntimeException e) {
+                        sender.sendMessage(String.format("Error: %s", e.getMessage()));
+                    }
                 }
             }
+            sender.sendMessage("Reloading World Data...");
+            this.getPlugin().getServer().reloadData();
 
-            if (packid == -1) {
-                sender.sendMessage(String.format("Error: Datapack \"%s\" Not Found", args[0]));
-            } else {
-                String token = System.getenv(
-                        config.getString("token-env")
-                    );
-
-                DatapackRepository repository = repositories.get(packid);
-                try {
-                    reloadDatapack(repository, workspacepath, datapackspath, token);
-                    
-                    sender.sendMessage(String.format("Reloaded \"%s\"!", repository.datapackname()));
-                    
-                    sender.sendMessage("Reloading World Data...");
-                    this.getPlugin().getServer().reloadData();
-                    
-                    result = true;
-                } catch (RuntimeException e) {
-                    sender.sendMessage(String.format("Error: %s", e.getMessage()));
-                }
-            }
+            result = true;
         }
 
         return result;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        return this.getPlugin().getDatapackNames();
     }
 
     void reloadDatapack(DatapackRepository repository, Path workspacePath, Path datapacksPath, String token) {

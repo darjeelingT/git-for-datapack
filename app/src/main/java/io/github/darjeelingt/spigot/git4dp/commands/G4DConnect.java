@@ -6,11 +6,12 @@ import java.util.Map;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
 import io.github.darjeelingt.spigot.git4dp.Main;
 import io.github.darjeelingt.spigot.git4dp.util.DatapackRepository;
 
-final public class G4DConnect extends BaseCommand {
+final public class G4DConnect extends BaseCommand implements TabCompleter {
     public G4DConnect(Main plugin) {
         super(plugin);
     }
@@ -36,6 +37,17 @@ final public class G4DConnect extends BaseCommand {
                         .getString("default.directory")
                 );
                 break;
+            case 3:
+                newPack.put("name", args[0]);
+                newPack.put("URI", args[1]);
+                newPack.put("branch", args[2]);
+                newPack.put(
+                    "directory", 
+                    this.getPlugin()
+                        .getCustomConfig()
+                        .getString("default.directory")
+                );
+                break;
             case 4:
                 newPack.put("name", args[0]);
                 newPack.put("URI", args[1]);
@@ -50,20 +62,13 @@ final public class G4DConnect extends BaseCommand {
             try {
                 DatapackRepository newRepository = DatapackRepository.toDPRepository(newPack);
 
-                List<DatapackRepository> repositories = this.getPlugin().getDatapacks();
-
-                boolean exist = false;
-                for (DatapackRepository repository : repositories) {
-                    if (repository.datapackname().equals(newRepository.datapackname())) {
-                        exist = true;
-                    }
-                }
-
-                if (exist) {
+                if (this.getPlugin().getDatapackNames().indexOf(newRepository.datapackname()) != -1) {// 同名のデータパックが登録されているかチェック
                     sender.sendMessage(String.format("Error: Datapack \"%s\" is already exists", newRepository.datapackname()));
                 } else {
 
-                    this.getPlugin().getDatapacks().add(newRepository);
+
+                    List<DatapackRepository> repositories = this.getPlugin().getDatapacks();
+                    repositories.add(newRepository);
 
                     result = true;
                     sender.sendMessage(String.format("Successfully Added Datapack Repository \"%s\"!", newRepository.datapackname()));
@@ -74,6 +79,11 @@ final public class G4DConnect extends BaseCommand {
         }
 
         return result;
+    }
+    
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        return List.of();
     }
     
     @Override

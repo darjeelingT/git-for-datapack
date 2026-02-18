@@ -35,7 +35,7 @@ public class Main extends JavaPlugin {
         this.commands = new ArrayList<BaseCommand>();
         this.commands.add(new G4DConnect(this));
         this.commands.add(new G4DDisconnect(this));
-        this.commands.add(new G4DEdit(this));
+        this.commands.add(new G4DUpdate(this));
         this.commands.add(new G4DInfo(this));
         this.commands.add(new G4DList(this));
         this.commands.add(new G4DReload(this));
@@ -77,6 +77,14 @@ public class Main extends JavaPlugin {
 
     public ArrayList<DatapackRepository> getDatapacks() {
         return this.datapacks;
+    }
+
+    public List<String> getDatapackNames() {
+        List<String> result = new ArrayList<String>();
+        for (DatapackRepository repository : this.getDatapacks()) {
+            result.add(repository.datapackname());
+        }
+        return result;
     }
 
     public void loadDatapacks() {

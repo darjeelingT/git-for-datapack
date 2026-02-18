@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
 import io.github.darjeelingt.spigot.git4dp.Main;
 import io.github.darjeelingt.spigot.git4dp.util.DatapackRepository;
 
-public class G4DInfo extends BaseCommand {
+final public class G4DInfo extends BaseCommand implements TabCompleter {
     public G4DInfo(Main plugin) {
         super(plugin);
     }
@@ -41,6 +42,21 @@ public class G4DInfo extends BaseCommand {
             sender.sendMessage("Error: Usage: /dpl-info <datapack_name>");
         }
 
+        return result;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> result;
+        switch (args.length) {
+            case 1:
+                result = this.getPlugin().getDatapackNames();
+                break;
+        
+            default:
+                result = List.of();
+                break;
+        }
         return result;
     }
 

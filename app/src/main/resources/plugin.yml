@@ -11,9 +11,6 @@ commands:
   g4d-connect:
     description: データパック名とリモートリポジトリを登録
     usage: 'Usage: /<command> <datapack_name> <URL> [<branch> <directory>]'
-  g4d-edit:
-    description: リポジトリの登録情報を編集
-    usage: 'Usage: /<command> <datapack_name> <attribute> <value>'
   g4d-disconnect:
     description: リポジトリの登録情報を削除(データパック自体は削除されない)
     usage: 'Usage: /<command> <datapack_name>'
@@ -25,4 +22,7 @@ commands:
     usage: 'Usage: /<command>'
   g4d-reload:
     description: リポジトリからデータパックを再読み込み
-    usage: 'Usage: /<command> [datapack_name]'
+    usage: 'Usage: /<command> [datapack_name...]'
+  g4d-update:
+    description: リポジトリの登録情報を編集
+    usage: 'Usage: /<command> <datapack_name> <attribute> <value>'

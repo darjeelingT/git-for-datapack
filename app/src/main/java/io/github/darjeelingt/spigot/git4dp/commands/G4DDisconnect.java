@@ -4,14 +4,16 @@ import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
 import io.github.darjeelingt.spigot.git4dp.Main;
 import io.github.darjeelingt.spigot.git4dp.util.DatapackRepository;
 
-final public class G4DDisconnect extends BaseCommand {
+final public class G4DDisconnect extends BaseCommand implements TabCompleter {
     public G4DDisconnect(Main plugin) {
         super(plugin);
     }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         boolean result = false;
@@ -20,15 +22,8 @@ final public class G4DDisconnect extends BaseCommand {
             if (args[0] == null || args[0].isEmpty()) {
                 sender.sendMessage("Error: Usage: /dpl-disconnect <datapack_name>");
             } else {
-                int packid = -1;
                 List<DatapackRepository> repositories = this.getPlugin().getDatapacks();
-
-                for (int i = 0; i < repositories.size(); i++) {
-                    if (repositories.get(i).datapackname().equals(args[0])) {
-                        packid = i;
-                        break;
-                    }
-                }
+                int packid = this.getPlugin().getDatapackNames().indexOf(args[0]);
 
                 if (packid == -1) {
                     sender.sendMessage(String.format("Error: Datapack \"%s\" Not Found", args[0]));
@@ -43,6 +38,21 @@ final public class G4DDisconnect extends BaseCommand {
             sender.sendMessage("Error: Usage: /dpl-disconnect <datapack_name>");
         }
 
+        return result;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> result;
+        switch (args.length) {
+            case 1:
+                result = this.getPlugin().getDatapackNames();
+                break;
+        
+            default:
+                result = List.of();
+                break;
+        }
         return result;
     }
     
