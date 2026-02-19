@@ -1,6 +1,5 @@
 package io.github.darjeelingt.spigot.git4dp;
 
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 public class Main extends JavaPlugin {
     public List<BaseCommand> commands;
     private FileConfiguration customConfig;
@@ -24,6 +22,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        this.saveDefaultConfig();
         
         try {
             this.worldDataDirectory = Bukkit.getWorldContainer().toPath().toRealPath(LinkOption.NOFOLLOW_LINKS);
@@ -39,8 +38,6 @@ public class Main extends JavaPlugin {
         this.commands.add(new G4DInfo(this));
         this.commands.add(new G4DList(this));
         this.commands.add(new G4DReload(this));
-
-        this.saveDefaultConfig();
 
         this.loadCustomConfig();
         this.loadDatapacks();
