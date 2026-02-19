@@ -8,6 +8,8 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'java'
+
+    // シャドーイング用(JGitを同梱)
     id 'com.gradleup.shadow' version '9.3.1'
 }
 
@@ -15,10 +17,10 @@ group 'io.github.darjeelingt.spigot.git4dp'
 version '1.0-SNAPSHOT'
 
 repositories {
-    // Use Maven Central for resolving dependencies.
+    // Marven Centralを使用
     mavenCentral()
 
-
+    // Spigot
     maven {
         url 'https://oss.sonatype.org/content/repositories/snapshots'
     }
@@ -36,12 +38,13 @@ dependencies {
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    // Spigotでコンパイル
     compileOnly 'org.spigotmc:spigot-api:1.21.11-R0.2-SNAPSHOT'
 }
 
 configurations.all {
     resolutionStrategy {
-        // don't cache changing modules at all
+        // キャッシュしないように設定
         cacheChangingModulesFor 0, 'seconds'
     }
 }
@@ -51,6 +54,11 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
     }
+}
+
+processResources {
+    // versionなどを更新
+    expand project.properties
 }
 
 tasks.named('test') {
