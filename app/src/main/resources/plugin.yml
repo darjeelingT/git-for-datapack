@@ -4,7 +4,7 @@ version: "${version}"
 description: GitHubのリポジトリからデータパックを更新するプラグイン
 api-version: '1.21.11'
 load: POSTWORLD
-author: 'darjeeling<T>'
+author: 'Darjeeling<T>'
 prefix: G4D
 
 commands:
